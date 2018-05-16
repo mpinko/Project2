@@ -18,6 +18,21 @@ public class MyProject2 implements Project2 {
         return toReverse;
     }
 
+
+    //Overview of how many times next() is called in addition(NodeList<Integer> nodeList1, NodeList<Integer> nodeList2)
+    //We originally generate 2 nodeLists, which contain large numbers.  After we reverse
+    //the numbers, we make the lists the same length, so we must consider the longer of the
+    //2 original NodeLists while doing big O analysis.
+    //While calculating the sum of 2 nodes, iterators' next method is called twice, or 2n.
+    //It is called for every node in the value, so L times.
+    //so, for just the basic addition class, the method runs in O(2n)
+    //We can simplify this by dropping the coefficient, and say this method runs in
+    //O(n)
+    //next() is also called when removing zeroes from the sum, which will be called L-l times,
+    //with L being the length of the larger NodeList, and l being the length of the smaller NodeList
+    //meaning our total O(n) can be written as
+    //O(n) = 2n + (L-l)
+    //simplified O(n) = n
     @Override
     public NodeList<Integer> addition(NodeList<Integer> nodeList1, NodeList<Integer> nodeList2) {
         NodeList<Integer> toReturn = new NodeList<>();
@@ -58,6 +73,13 @@ public class MyProject2 implements Project2 {
         return toReturn;
     }
 
+    //Big O analysis for addition(Iterator<NodeList<Integer>> iterator)
+    //this method calls the other addition method, which means it will be some modification
+    //of our other O(n), which is O(n) = n;
+    //this method called the other addition method for every NodeList in the Iterator,
+    //meaning it will be called n times, with n = number of NodeList in the Iterator.
+    //This means that our final O(n) value will be
+    //O(n) = n^2, which means it runs in quadratic time.
     @Override
     public NodeList<Integer> addition(Iterator<NodeList<Integer>> iterator) {
         NodeList<Integer> toReturn = new NodeList<>();
