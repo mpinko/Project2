@@ -1,8 +1,8 @@
 package edu.gcccd.csis;
 
 import org.junit.Test;
-import sun.misc.resources.Messages_ja;
 
+import java.io.*;
 import java.math.BigInteger;
 import java.util.Iterator;
 
@@ -17,6 +17,14 @@ public class MyProject2Test {
             sb.append(i);
         }
         return new BigInteger(sb.toString());
+    }
+
+    private static NodeList<Integer> genNodeList(final String s){
+        final NodeList<Integer> toReturn = new NodeList<>();
+        for(final char c : s.toCharArray()){
+            toReturn.append(Character.getNumericValue(c));
+        }
+        return toReturn;
     }
 
     @Test
@@ -48,6 +56,19 @@ public class MyProject2Test {
 
         BigInteger sumToInt = genBigInteger(sumNode);
         assertEquals(sumToInt, sumInt);
+
+        //corner case, empty lists
+        NodeList<Integer> cc1 = new NodeList<>();
+        NodeList<Integer> cc2 = new NodeList<>();
+        NodeList<Integer> cc3 = new MyProject2().addition(cc1, cc2);
+
+        //corner case, adding empty
+        NodeList<Integer> cc4 = new NodeList<>();
+        NodeList<Integer> cc5 = genNodeList("1234");
+        NodeList<Integer> cc6 = new MyProject2().addition(cc4, cc5);
+        BigInteger CC5 = genBigInteger(cc5);
+        BigInteger CC6 = genBigInteger(cc6);
+        assertEquals(CC5, CC6);
     }
 
     @Test
@@ -76,11 +97,41 @@ public class MyProject2Test {
 
     @Test
     public void testSave(){
-
+        MyProject2 p = new MyProject2();
+        NodeList<Integer> n1 = Project2.generateNumber(30);
+        NodeList<Integer> n2 = new NodeList<>();
+        p.save(n1, "result.bin");
+        try{
+            InputStream stream = new FileInputStream("result.bin");
+            while(stream.available() > 0){
+                n2.append(stream.read());
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+        BigInteger N1 = genBigInteger(n1);
+        BigInteger N2 = genBigInteger(n2);
+        assertEquals(N1, N2);
     }
 
     @Test
     public void testLoad(){
-
+        NodeList<Integer> n1 = Project2.generateNumber(30);
+        try{
+            FileOutputStream stream = new FileOutputStream("result.bin");
+            final Iterator<Integer> i = n1.iterator();
+            while(i.hasNext()){
+                stream.write(i.next());
+            }
+            stream.close();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+        NodeList<Integer> n2 = new MyProject2().load("result.bin");
+        BigInteger N1 = genBigInteger(n1);
+        BigInteger N2 = genBigInteger(n2);
+        assertEquals(N1, N2);
     }
 }

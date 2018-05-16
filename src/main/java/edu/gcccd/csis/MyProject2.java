@@ -47,8 +47,8 @@ public class MyProject2 implements Project2 {
             }
         }
         //nodelists should be backwards and the same length, use quotient remainder theorem and modular artimetic w base 10
-        Iterator<Integer> i1 = reversed1.iterator();
-        Iterator<Integer> i2 = reversed2.iterator();
+        final Iterator<Integer> i1 = reversed1.iterator();
+        final Iterator<Integer> i2 = reversed2.iterator();
         int toCarry = 0;
         int samePlace;
         while(i1.hasNext()){
